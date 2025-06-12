@@ -284,6 +284,25 @@ require('lazy').setup({
     },
   },
 
+  -- testing nvim-lint and golangci-lint
+  {
+    'mfussenegger/nvim-lint',
+    config = function()
+      local lint = require 'lint'
+
+      lint.linters_by_ft = {
+        go = { 'golangci_lint' },
+      }
+
+      -- Run lint on save
+      vim.api.nvim_create_autocmd({ 'BufWritePost' }, {
+        callback = function()
+          lint.try_lint()
+        end,
+      })
+    end,
+  },
+
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
   --
   -- This is often very useful to both group configuration, as well as handle
