@@ -290,11 +290,23 @@ require('lazy').setup({
     config = function()
       local lint = require 'lint'
 
+      -- Define the golangci-lint linter here
+      lint.linters.golangci_lint = {
+        cmd = 'golangci-lint',
+        args = { 'run', '--out-format', 'json' },
+        stdin = false,
+        stream = 'stdout',
+        ignore_exitcode = true,
+        parser = require('lint.parser').from_errorformat(nil, {
+          source = 'golangci-lint',
+          format = 'json',
+        }),
+      }
+
       lint.linters_by_ft = {
         go = { 'golangci_lint' },
       }
 
-      -- Run lint on save
       vim.api.nvim_create_autocmd({ 'BufWritePost' }, {
         callback = function()
           lint.try_lint()
