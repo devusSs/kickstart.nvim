@@ -799,7 +799,7 @@ require('lazy').setup({
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
-        go = { 'golines' },
+        go = { 'gofumpt', 'goimports', 'golines' },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --
@@ -807,6 +807,11 @@ require('lazy').setup({
         -- javascript = { "prettierd", "prettier", stop_after_first = true },
       },
       formatters = {
+        goimports = {
+          command = 'goimports',
+          args = {},
+          stdin = true,
+        },
         golines = {
           command = 'golines',
           args = { '--max-len=100', '--base-formatter=gofumpt', '-' },
